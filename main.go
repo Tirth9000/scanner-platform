@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"scanner/scanners/discovery"
 	"scanner/core"
+	"scanner/scanners/discovery"
 )
 
 func main() {
@@ -14,6 +14,10 @@ func main() {
 	registry := core.NewRegistry()
 
 	registry.Register(discovery.NewDNSScanner())
+	registry.Register(discovery.NewCrtCTScanner())
+	registry.Register(discovery.NewCertSpotterCTScanner())
+	registry.Register(discovery.NewSubdomainBruteforceScanner())
+
 
 	pipeline := core.NewPipeline(registry)
 
@@ -24,5 +28,5 @@ func main() {
 
 	for _, r := range results {
 		fmt.Printf("%+v\n", r)
-}
+	}
 }
