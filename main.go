@@ -17,11 +17,11 @@ func main() {
 	registry.Register(discovery.NewCrtCTScanner())
 	registry.Register(discovery.NewCertSpotterCTScanner())
 	registry.Register(discovery.NewSubdomainBruteforceScanner())
-
+	registry.Register(discovery.NewSubdomainChaosScanner())
 
 	pipeline := core.NewPipeline(registry)
 
-	results, err := pipeline.Execute(ctx, "google.com")
+	results, err := pipeline.Execute(ctx, "allianzcloud.com")
 	if err != nil {
 		panic(err)
 	}
@@ -29,4 +29,6 @@ func main() {
 	for _, r := range results {
 		fmt.Printf("%+v\n", r)
 	}
+
+	fmt.Println(len(results))
 }

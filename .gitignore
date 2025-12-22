@@ -1,1 +1,5 @@
+.DS_Store
 test/
+scanners/discovery/AllChaosData 
+scanners/discovery/everything.txt
+chaos_downloader/
