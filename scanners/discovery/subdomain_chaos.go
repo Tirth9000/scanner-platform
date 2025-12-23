@@ -41,6 +41,10 @@ func (c *SubdomainChaosScanner) Run(ctx context.Context, domain string) ([]core.
 			}
 
 			for _, subdomain := range strings.Split(string(subdomains), "\n") {
+				if !IsValidSubdomain(string(subdomain), domain) {
+					continue
+				}
+				
 				results = append(results, core.Result{
 					Scanner: c.Name(),
 					Category: c.Category(),

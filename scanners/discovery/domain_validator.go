@@ -19,11 +19,11 @@ func IsValidSubdomain(sub, domain string) bool {
     if strings.HasPrefix(sub, ".") ||
         strings.Contains(sub, "*") ||
         strings.Contains(sub, "@") ||
-        strings.Contains(sub, " ") {
+        strings.Contains(sub, " ") ||
+        strings.ContainsAny(sub, " <>\"'") {
         return false
     }
 
-    // Must belong to domain
     if sub == domain {
         return false
     }
@@ -31,8 +31,7 @@ func IsValidSubdomain(sub, domain string) bool {
     if !strings.HasSuffix(sub, "."+domain) {
         return false
     }
-
-    // Basic DNS label validation
+    
     labels := strings.Split(sub, ".")
     for _, label := range labels {
         if label == "" || len(label) > 63 {

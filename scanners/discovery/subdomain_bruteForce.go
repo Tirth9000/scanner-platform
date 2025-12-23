@@ -39,6 +39,10 @@ func (s *SubdomainBruteforceScanner) Run(ctx context.Context, target string) ([]
 	for _, word := range wordlist {
 		subdomain := fmt.Sprintf("%s.%s", word, target)
 
+		if !IsValidSubdomain(subdomain, target) {
+			continue
+		}
+
 		ips, err := net.LookupIP(subdomain)
 		if err != nil || len(ips) == 0 {
 			continue

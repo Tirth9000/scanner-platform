@@ -75,11 +75,7 @@ func (c *CertSpotterCTScanner) Run(ctx context.Context, domain string) ([]core.R
 		for _, sub := range entry.DNSNames {
 			sub = strings.TrimSpace(sub)
 
-			// Noise filtering
-			if sub == "" ||
-				strings.Contains(sub, "*") ||
-				strings.Contains(sub, "@") ||
-				seen[sub] {
+			if !IsValidSubdomain(sub, domain) {
 				continue
 			}
 

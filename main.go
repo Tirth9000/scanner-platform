@@ -14,14 +14,16 @@ func main() {
 	registry := core.NewRegistry()
 
 	registry.Register(discovery.NewDNSScanner())
-	registry.Register(discovery.NewCrtCTScanner())
+	registry.Register(discovery.NewSubdomainSubFinderScanner())
+	// registry.Register(discovery.NewCrtCTScanner())
 	registry.Register(discovery.NewCertSpotterCTScanner())
-	registry.Register(discovery.NewSubdomainBruteforceScanner())
-	registry.Register(discovery.NewSubdomainChaosScanner())
+	// registry.Register(discovery.NewSubdomainBruteforceScanner())
+	// registry.Register(discovery.NewSubdomainChaosScanner())
 
 	pipeline := core.NewPipeline(registry)
 
-	results, err := pipeline.Execute(ctx, "allianzcloud.com")
+	// results, err := pipeline.Execute(ctx, "allianzcloud.com")
+	results, err := pipeline.Execute(ctx, "example.com")
 	if err != nil {
 		panic(err)
 	}
