@@ -2,6 +2,7 @@ package core
 
 import "time"
 
+
 type Result struct {
 	Scanner   string
 	Category  string

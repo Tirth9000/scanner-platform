@@ -53,7 +53,7 @@ func (s *SubdomainBruteforceScanner) Run(ctx context.Context, target string) ([]
 				Scanner: s.Name(),
 				Category: s.Category(),
 				Target: target,
-				Data: map[string]any{
+				Data: map[string]string{
 					"subdomain": subdomain,
 					"method": "dns_bruteforce",
 				},
@@ -62,6 +62,8 @@ func (s *SubdomainBruteforceScanner) Run(ctx context.Context, target string) ([]
 				},
 			)}
 	}
+
+	fmt.Println(len(results))
 
 	return results, nil
 }

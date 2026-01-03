@@ -48,9 +48,9 @@ func (s * SubdomainSubFinderScanner) Run(ctx context.Context, domain string) ([]
 	for scanner.Scan() {
 		sub := strings.TrimSpace(scanner.Text())
 
-		if !IsValidSubdomain(sub, domain) {
-			continue
-		}
+		// if !IsValidSubdomain(sub, domain) {
+		// 	continue
+		// }
 
 		if _, ok := seen[sub]; ok {
 			continue
@@ -61,7 +61,7 @@ func (s * SubdomainSubFinderScanner) Run(ctx context.Context, domain string) ([]
 			Scanner:  "subdomain_subfinder",
 			Category: "discovery",
 			Target:   domain,
-			Data: map[string]interface{}{
+			Data: map[string]string{
 				"method":    "subfinder",
 				"subdomain": sub,
 			},

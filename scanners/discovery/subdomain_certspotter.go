@@ -85,9 +85,9 @@ func (c *CertSpotterCTScanner) Run(ctx context.Context, domain string) ([]core.R
 				Scanner:  c.Name(),
 				Category: c.Category(),
 				Target:   domain,
-				Data: map[string]interface{}{
+				Data: map[string]string{
 					"subdomain": sub,
-					"source":    "certspotter",
+					"source": "certspotter",
 				},
 				Severity:  "info",
 				Timestamp: time.Now(),
@@ -95,6 +95,6 @@ func (c *CertSpotterCTScanner) Run(ctx context.Context, domain string) ([]core.R
 		}
 	}
 
-	fmt.Println("CertSpotter CT results:", len(results))
+	fmt.Println(len(results))
 	return results, nil
 }

@@ -71,7 +71,7 @@ func (c *CrtCTScanner) Run(ctx context.Context, domain string) ([]core.Result, e
                 Scanner:  c.Name(),
                 Category: c.Category(),
                 Target:   domain,
-                Data: map[string]interface{}{
+                Data: map[string]string{
                     "subdomain": sub,
                     "source":    "certificate_transparency",
                 },

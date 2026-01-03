@@ -49,7 +49,7 @@ func (c *SubdomainChaosScanner) Run(ctx context.Context, domain string) ([]core.
 					Scanner: c.Name(),
 					Category: c.Category(),
 					Target: domain,
-					Data: map[string]interface{}{
+					Data: map[string]string{
 						"subdomain": string(subdomain),
 						"method": "chaos_data",
 					},

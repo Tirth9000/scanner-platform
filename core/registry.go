@@ -15,3 +15,27 @@ func (r *Registry) Register(scanner Scanner) {
 func (r *Registry) All() []Scanner {
 	return r.scanners
 }
+
+
+type FilterScannerRegistry struct {
+	filterscanners []FilterScanner
+}
+
+func NewFilterScannerRegistry() *FilterScannerRegistry {
+	return &FilterScannerRegistry{}
+}
+
+func (r *FilterScannerRegistry) RegisterFilterScanner(scanner FilterScanner) {
+	r.filterscanners = append(r.filterscanners, scanner)
+}
+
+func (r *Registry) IsFilterScanner(scanner FilterScanner) bool {
+	return true
+}
+
+func (r *FilterScannerRegistry) All() []FilterScanner {
+	return r.filterscanners
+}
+
+
+

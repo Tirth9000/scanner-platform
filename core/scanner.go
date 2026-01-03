@@ -7,3 +7,9 @@ type Scanner interface {
 	Category() string
 	Run(ctx context.Context, target string) ([]Result, error)
 }
+
+type FilterScanner interface {
+	Name() string
+	Category() string
+	RunFilterScanner(ctx context.Context, subdomains []Result, domain string) ([]Result, error)
+}
