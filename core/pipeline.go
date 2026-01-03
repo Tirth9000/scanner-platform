@@ -7,13 +7,25 @@ import (
 
 type Pipeline struct {
 	registry *Registry
-	runner   *Runner
+	runner *Runner
+}
+
+type FilterScannerPipeline struct {
+	registry *FilterScannerRegistry
+	runner *Runner
 }
 
 func NewPipeline(registry *Registry) *Pipeline {
 	return &Pipeline{
 		registry: registry,
-		runner:   NewRunner(),
+		runner: NewRunner(),
+	}
+}
+
+func NewFilterPipeline(registry *FilterScannerRegistry) *FilterScannerPipeline {
+	return &FilterScannerPipeline{
+		registry: registry,
+		runner: NewRunner(),
 	}
 }
 
@@ -32,4 +44,19 @@ func (p *Pipeline) Execute(ctx context.Context, target string) ([]Result, error)
 	}
 
 	return results, nil
+}
+
+func (p *FilterScannerPipeline) ExecuteFilterScanners(ctx context.Context, subdomains []Result, domain string) ([]Result, error) {
+
+	for _, scanner := range p.registry.All() {
+		fmt.Println("Running filter scanner:", scanner.Name())
+		res, err := p.runner.RunFilterScanners(ctx, scanner, subdomains, domain)
+		if err != nil {
+			fmt.Println("Filter scanner error:", scanner.Name(), err)
+		}
+		
+		subdomains = res
+	}
+	
+	return subdomains, nil
 }

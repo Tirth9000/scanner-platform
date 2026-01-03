@@ -56,6 +56,11 @@ func (c *CrtCTScanner) Run(ctx context.Context, domain string) ([]core.Result, e
         names := strings.Split(raw, "\n")
         for _, sub := range names {
             sub = strings.TrimSpace(sub)
+
+            if !IsValidSubdomain(sub, domain) {
+                continue
+            }
+            
             if sub == "" || seen[sub] {
                 continue
             }
@@ -66,7 +71,7 @@ func (c *CrtCTScanner) Run(ctx context.Context, domain string) ([]core.Result, e
                 Scanner:  c.Name(),
                 Category: c.Category(),
                 Target:   domain,
-                Data: map[string]interface{}{
+                Data: map[string]string{
                     "subdomain": sub,
                     "source":    "certificate_transparency",
                 },
