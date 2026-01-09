@@ -5,6 +5,7 @@ import (
 	"context"
 	"strings"
 	"fmt"
+	"regexp"
 
 	"scanner/core"
 )
@@ -37,23 +38,25 @@ func normalizeSubdomain(s string) string {
 }
 
 
+var dnsLabelRegex = regexp.MustCompile(`^[a-zA-Z0-9-]{1,63}$`)
+
 func IsValidSubdomain(sub, domain string) bool {
     sub = strings.TrimSpace(sub)
+    domain = strings.TrimSpace(domain)
 
-    if sub == "" {
+    if sub == "" || domain == "" {
         return false
     }
 
     sub = strings.TrimSuffix(sub, ".")
+    domain = strings.TrimSuffix(domain, ".")
 
-    if strings.HasPrefix(sub, ".") ||
-        strings.Contains(sub, "*") ||
-        strings.Contains(sub, "@") ||
-        strings.Contains(sub, " ") ||
-        strings.ContainsAny(sub, " <>\"'") {
+    // Fast reject obvious junk
+    if strings.ContainsAny(sub, "* @ <>\"'") {
         return false
     }
 
+    // Must be a strict child of domain
     if sub == domain {
         return false
     }
@@ -61,12 +64,18 @@ func IsValidSubdomain(sub, domain string) bool {
     if !strings.HasSuffix(sub, "."+domain) {
         return false
     }
-    
+
     labels := strings.Split(sub, ".")
     for _, label := range labels {
-        if label == "" || len(label) > 63 {
+        if label == "" {
             return false
         }
+
+        // RFC-compliant label validation
+        if !dnsLabelRegex.MatchString(label) {
+            return false
+        }
+
         if label[0] == '-' || label[len(label)-1] == '-' {
             return false
         }
@@ -74,6 +83,7 @@ func IsValidSubdomain(sub, domain string) bool {
 
     return true
 }
+
 
 func (d *DedupFilter) RunFilterScanner(
     ctx context.Context,
@@ -90,7 +100,6 @@ func (d *DedupFilter) RunFilterScanner(
         }
 
 		if !IsValidSubdomain(sub.Data.(map[string]string)["subdomain"], domain) {
-			fmt.Println(sub.Data.(map[string]string)["subdomain"])
 			continue
 		}
 

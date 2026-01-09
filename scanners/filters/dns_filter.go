@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
+	"time"
 
 	"scanner/core"
 )
@@ -68,12 +69,22 @@ func (f *DNSFilter) RunFilterScanner(ctx context.Context, results []core.Result,
 		}
 	}()
 
-	var resolved []string
+	var resolved []core.Result
 	scanner := bufio.NewScanner(stdout)
 	scanner.Buffer(make([]byte, 1024), 1024*1024)
 
 	for scanner.Scan() {
-		resolved = append(resolved, scanner.Text())
+		resolved = append(resolved, core.Result{
+			Scanner:  "DNSX Filter",
+			Category: "discovery",
+			Target:   domain,
+			Data: map[string]string{
+				"method":    "dnsx Filter",
+				"subdomain": scanner.Text(),
+			},
+			Severity:  "info",
+			Timestamp: time.Now(),
+		})
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -86,5 +97,5 @@ func (f *DNSFilter) RunFilterScanner(ctx context.Context, results []core.Result,
 
 	fmt.Println("DNSFilter resolved count:", len(resolved))
 
-	return results, nil
+	return resolved, nil
 }

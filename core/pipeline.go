@@ -32,6 +32,8 @@ func NewFilterPipeline(registry *FilterScannerRegistry) *FilterScannerPipeline {
 func (p *Pipeline) Execute(ctx context.Context, target string) ([]Result, error) {
 	var results []Result
 
+	fmt.Println("Starting pipeline for target:", target)
+
 	for _, scanner := range p.registry.All() {
 		fmt.Println("Running scanner:", scanner.Name())
 		res, err := p.runner.Run(ctx, scanner, target)
