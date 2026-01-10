@@ -64,3 +64,28 @@ type HTTPXOutput struct {
 	} `json:"tls"`
 	Time int64 `json:"time"`
 }
+
+
+type PortInfo struct {
+	Port int  `json:"port"`
+	TLS  bool `json:"tls"`
+}
+
+type HostInfo struct {
+	Subdomain string     `json:"subdomain"`
+	Ports     []PortInfo `json:"ports"`
+}
+
+type IPAggregate struct {
+	IP    string     `json:"ip"`
+	Ports []int      `json:"ports"`
+	Hosts []HostInfo `json:"hosts"`
+}
+
+type NaabuOutput struct {
+		Host     string `json:"host"`
+		IP       string `json:"ip"`
+		Port     int    `json:"port"`
+		Protocol string `json:"protocol"`
+		TLS      bool   `json:"tls"`
+	}
